@@ -82,11 +82,12 @@ const jobDetails = {
 };
 
 // --- Job Detail Page Component ---
-export default async function JobDetailPage({ params }: { params: { id: string } }) {
-  const jobId = params.id;
-  const job = jobDetails[jobId as keyof typeof jobDetails];
+export type ParamsType = Promise<{ id: string }>;
 
-  // If no job data is found for the given ID, trigger Next.js's 404 page.
+export default async function JobDetailPage(props: { params: ParamsType }) {
+  const { id } = await props.params;
+  const job = jobDetails[id as keyof typeof jobDetails];
+
   if (!job) {
     notFound();
   }
