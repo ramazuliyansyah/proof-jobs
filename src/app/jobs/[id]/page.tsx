@@ -192,12 +192,13 @@ const jobDetails = {
 
 // Make the component async as recommended by Next.js for server components,
 // even if params is synchronous in this specific context.
-export default async function JobDetailPage(context: {
-  params: { id: string };
-}) {
-  const { id } = context.params;
+export default async function JobDetailPage({ params }: { params: { id: string } }) {
+  // Explicitly await params before accessing its properties.
+  // This satisfies the stricter TypeScript check during the build.
+  const resolvedParams = await params; // <--- NEW LINE
+  const jobId = resolvedParams.id;     // <--- CHANGED LINE
 
-  const job = jobDetails[id as keyof typeof jobDetails];
+  const job = jobDetails[jobId as keyof typeof jobDetails];
 
   if (!job) {
     notFound();
