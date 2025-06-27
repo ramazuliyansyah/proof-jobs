@@ -83,10 +83,8 @@ const jobDetails = {
 
 // --- Job Detail Page Component ---
 export default async function JobDetailPage({ params }: { params: { id: string } }) {
-  // Fix for the TypeScript/Amplify build error: Explicitly await params.
-  // This satisfies the type system's expectation that 'params' might be a Promise.
-  const resolvedParams = await params;
-  const jobId = resolvedParams.id; // Access 'id' from the resolved params.
+  const jobId = params.id;
+  const job = jobDetails[jobId as keyof typeof jobDetails];
 
   const job = jobDetails[jobId as keyof typeof jobDetails]; // Type assertion for safety
 
